@@ -1,4 +1,5 @@
 import 'package:amazon_clone/utils/colors.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,6 +15,8 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   Account? _accountVal = Account.signIn;
   bool isLogin = false;
+  String countryCode = "+";
+  TextEditingController mobileController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -183,20 +186,125 @@ class _AuthScreenState extends State<AuthScreen> {
                       padding: EdgeInsets.symmetric(
                           horizontal: width * 0.03, vertical: height * 0.01),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            height: height * 0.06,
-                            width: width * 0.2,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: grey,
+                          InkWell(
+                            onTap: () {
+                              showCountryPicker(
+                                  context: context,
+                                  onSelect: (val) {
+                                    setState(() {
+                                      countryCode = '+${val.phoneCode}';
+                                    });
+                                  });
+                            },
+                            child: Container(
+                              height: height * 0.06,
+                              width: width * 0.2,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: grey,
+                                  ),
+                                  color: greyShade2,
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Center(
+                                child: Text(
+                                  countryCode,
+                                  style: textTheme.displaySmall!
+                                      .copyWith(fontWeight: FontWeight.w400),
                                 ),
-                                color: greyShade2,
-                                borderRadius: BorderRadius.circular(5)),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.06,
+                            width: width * 0.68,
+                            child: TextFormField(
+                              cursorColor: black,
+                              style: textTheme.displaySmall,
+                              decoration: InputDecoration(
+                                hintText: 'Mobile Number',
+                                hintStyle: textTheme.bodySmall,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    color: grey,
+                                    width: 1,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    color: grey,
+                                    width: 1,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: const BorderSide(
+                                    color: secondaryColor,
+                                    width: 2,
+                                  ),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    color: red,
+                                    width: 2,
+                                  ),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    color: red,
+                                    width: 1,
+                                  ),
+                                ),
+                              ),
+                              controller: mobileController,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                            ),
                           )
                         ],
                       ),
-                    )
+                    ),
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
+                    ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: amber,
+                            minimumSize: Size(width * 0.9, height * 0.06)),
+                        child: Text(
+                          'Continue',
+                          style: textTheme.displaySmall,
+                        )),
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: width * 0.03, vertical: height * 0.01),
+                      child: RichText(
+                          text: TextSpan(children: [
+                        TextSpan(
+                            text: 'By continuing you agree to Amazon\'s ',
+                            style: textTheme.labelMedium),
+                        TextSpan(
+                            text: 'Condition of use ',
+                            style:
+                                textTheme.labelMedium!.copyWith(color: blue)),
+                        TextSpan(text: 'and ', style: textTheme.labelMedium),
+                        TextSpan(
+                            text: 'Privacy Notice',
+                            style: textTheme.labelMedium!.copyWith(color: blue))
+                      ])),
+                    ),
+
                     // Container(
                     //   padding: EdgeInsets.all(8.0),
                     //   decoration: BoxDecoration(
@@ -278,6 +386,47 @@ class _AuthScreenState extends State<AuthScreen> {
                     //   ),
                     // ),
                   ],
+                ),
+              ),
+              SizedBox(
+                height: height * 0.05,
+              ),
+              Container(
+                height: 2,
+                width: width,
+                decoration: BoxDecoration(
+                    gradient:
+                        LinearGradient(colors: [white, greyShade2, white])),
+              ),
+              SizedBox(
+                height: height * 0.02,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    'Condition of use',
+                    style: textTheme.bodyMedium!.copyWith(color: blue),
+                  ),
+                  Text(
+                    'Privacy Notice',
+                    style: textTheme.bodyMedium!.copyWith(color: blue),
+                  ),
+                  Text(
+                    'Help',
+                    style: textTheme.bodyMedium!.copyWith(color: blue),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: width * 0.04, vertical: height * 0.01),
+                child: Text(
+                  '@1996-2023, Amazon.com, Inc or its affiliates',
+                  style: textTheme.labelMedium!.copyWith(color: grey),
                 ),
               )
             ],
